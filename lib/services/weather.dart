@@ -1,12 +1,12 @@
 import 'package:app_do_clima/utilities/constants.dart';
 
-import 'localizacao.dart';
+import 'location.dart';
 import 'network.dart';
 
-class WeatherService {
+class WeatherModel {
   Future<dynamic> getWeatherData() async {
     Location location = Location();
-    await location.informarLocalizacao();
+    await location.getCurrentLocation();
 
     ComunicationWithAPI comunicationWithAPI = ComunicationWithAPI(
       url:

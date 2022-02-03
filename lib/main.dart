@@ -1,4 +1,4 @@
-import 'package:app_do_clima/screens/home.dart';
+import 'package:app_do_clima/screens/home/home.dart';
 import 'package:app_do_clima/services/weather.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _ClimaAppState extends State<ClimaApp> {
   }
 
   void getInformation() async {
-    dynamic weatherData = await WeatherService().getWeatherData();
+    dynamic weatherData = await WeatherModel().getWeatherData();
     Navigator.push(
       context,
       MaterialPageRoute(
