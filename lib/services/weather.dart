@@ -15,4 +15,27 @@ class WeatherModel {
     dynamic weatherData = await comunicationWithAPI.getData();
     return weatherData;
   }
+
+    Future<dynamic> getCityWeather(String? cityName) async {
+
+    ComunicationWithAPI comunicationWithAPI = ComunicationWithAPI(
+      url:
+          "$weatherApiURL?key=$apiKey&q=$cityName=&aqi=no&lang=pt",
+    );
+    dynamic weatherData = await comunicationWithAPI.getData();
+    return weatherData;
+  }
+  
+
+  String? changeEmoji(int conditionCode) {
+    if (conditionCode == 1000) {
+      return "lib/assets/images/icons8-summer-96.png";
+    } else if (conditionCode >= 1003 && conditionCode <= 1063) {
+      return "lib/assets/images/icons8-fog-96.png";
+    } else if (conditionCode >= 1180 && conditionCode <= 1201) {
+      return "lib/assets/images/icons8-torrential-rain-96.png";
+    } else {
+      return "lib/assets/images/icons8-windy-weather-96.png";
+    }
+  }
 }
