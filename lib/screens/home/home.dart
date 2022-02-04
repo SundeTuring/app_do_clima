@@ -52,62 +52,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.12,
-            child: BottomAppBar(
-              color: backgroundColorAccent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          BootstrapIcons.houseFill,
-                          color: Colors.white,
-                          size: 40,
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      var typedName = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchScreen(),
-                        ),
-                      );
-
-                      if (typedName != null) {
-                        var weatherData =
-                            await WeatherModel().getCityWeather(typedName);
-                        updateUI(weatherData);
-                      }
-                    },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          BootstrapIcons.search,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
@@ -120,8 +64,19 @@ class _HomeState extends State<Home> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(
-                      width: 32,
+                    IconButton(
+                      onPressed: () async {
+                        dynamic weatherData =
+                            await WeatherModel().getWeatherData();
+                        updateUI(
+                          weatherData,
+                        );
+                      },
+                      icon: const Icon(
+                        BootstrapIcons.arrowClockwise,
+                        color: Colors.white,
+                        size: 25,
+                      ),
                     ),
                     Row(
                       children: [
@@ -147,14 +102,20 @@ class _HomeState extends State<Home> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        dynamic weatherData =
-                            await WeatherModel().getWeatherData();
-                        updateUI(
-                          weatherData,
+                        var typedName = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchScreen(),
+                          ),
                         );
+                        if (typedName != null) {
+                          var weatherData =
+                              await WeatherModel().getCityWeather(typedName);
+                          updateUI(weatherData);
+                        }
                       },
                       icon: const Icon(
-                        BootstrapIcons.arrowClockwise,
+                        BootstrapIcons.search,
                         color: Colors.white,
                         size: 25,
                       ),
@@ -163,56 +124,50 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 40,
-                ),
-                child: Text(
-                  'Clima de hoje',
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.only(top: 100),
+                child: Column(
+                  children: [
+                    Text(
+                      climateCondition.toString(),
+                      style: GoogleFonts.inter(
+                        textStyle: const TextStyle(
+                          color: Color(0xFFFFFFFF),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              Text(
-                climateCondition.toString(),
-                style: GoogleFonts.inter(
-                  textStyle: const TextStyle(
-                    color: Color(0xFFFFFFFF),
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Image.asset(
-                WeatherModel().changeEmoji(conditionCode!.toInt()).toString(),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: "${temperatureAsInt.toString()} ",
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
+                    Image.asset(
+                      WeatherModel()
+                          .changeEmoji(conditionCode!.toInt())
+                          .toString(),
                     ),
-                  ),
-                  children: const <TextSpan>[
-                    TextSpan(
-                      text: '°',
-                      style: TextStyle(
-                        color: blue,
-                        fontSize: 60,
+                    RichText(
+                      text: TextSpan(
+                        text: "${temperatureAsInt.toString()} ",
+                        style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        children: const <TextSpan>[
+                          TextSpan(
+                            text: '°',
+                            style: TextStyle(
+                              color: blue,
+                              fontSize: 60,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 100),
+                padding: const EdgeInsets.only(top: 75),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
